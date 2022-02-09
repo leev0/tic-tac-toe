@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel = "stylesheet">
+    <title>TicTacToe</title>
+</head>
+<body>
+    <div id = "welcomeMessage" style = "text-align: center">
+        Welcome to TicTacToe! Make a move to play.
+    </div>
+    <div class="layout">
+        <div class="block" id = "a" onclick="boxi(0)"></div>
+        <div class="block" id = "b" onclick="boxi(1)"></div>
+        <div class="block" id = "c" onclick="boxi(2)"></div>
+        <div class="block" id = "d" onclick="boxi(3)"></div>
+        <div class="block" id = "e" onclick="boxi(4)"></div>
+        <div class="block" id = "f" onclick="boxi(5)"></div>
+        <div class="block" id = "g" onclick="boxi(6)"></div>
+        <div class="block" id = "h" onclick="boxi(7)"></div>
+        <div class="block" id = "i" onclick="boxi(8)"></div>
+    </div>
+
+    <div class = "Reset" style = "text-align: center">
+        <button id = "reset" onclick = "reset()">RESET</button>
+    </div>
+
+    <div class = "win" id = "w" style = "text-align: center">
+        You Won!!! Press Reset to play again.
+    </div>
+
+    <div class = "loss" id = "l" style = "text-align:center">
+        You Lost!!! Press Reset to play again.
+    </div>
+
+    <div class = "loss" id = "draw" style = "text-align:center">
+        Draw!!! Press Reset to play again.
+    </div>
+
+    <script>
+        element = document.getElementsByClassName("block");
+        WinP = document.getElementById('w')
+        LossP = document.getElementById('l')
+        DrawP = document.getElementById('draw')
+
+        clicked = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        total_moves = 0
+
+        var mapper = {
+            0: "a",
+            1: "b",
+            2: "c",
+            3: "d",
+            4: "e",
+            5: "f",
+            6: "g",
+            7: "h",
+            8: "i"
+        }
+        state = 0;
+        game_state = false;
+
+        function boxi(box) {
+
+            if(clicked[box] == 0){
+                ++total_moves;
+                clicked[box] = 1+state;
+                var img = document.createElement("img");
+                if(state == 0)
+                    img.src = "cross.png";
+                else
+                    img.src = "circle.png";
+                img.width = 90;
+                img.height = 90;
+                state = 1 - state;
+                src = document.getElementById(mapper[box]);
+                src.appendChild(img);
+                console.log("clicked box :" + box);
+            }
+            else{
+                console.log("already clicked :" + box);
+                return;
+            }
+            game_state = checkWin();
+            if(game_state){
+                console.log("WIN!");
+                win_message(box);
+            }
+            else if(total_moves == 9){
+                draw_message();
+            }
+            if(state == 1)
+                run();
+        }
+        function win_message(box){
+            var winner = clicked[box];
+            console.log("Player " + winner + " wins !!!");
+            for(i = 0; i < 9; i++){
+                clicked[i] = winner;
+            }
+            if(winner == 1){
+                WinP.classList.add("show");
+            }
+            else{
+                LossP.classList.add("show");
+            }
+        }
+        function draw_message(){
+            console.log("Draw!!!");
+            DrawP.classList.add('show');
+        }
+        function checkWin(){
+            for (i = 0; i < 3; i++){
+                flag = clicked[i*3];
+                if(flag == 0){
+                    continue;
+                }
+                for(j = 0; j < 3; j++){
+                    if(flag != clicked[i*3+j]){
+                        break;
+                    }
+                    if(j == 2){
+                        return true;
+                    }
+                }
+            }
+            for (i = 0; i < 3; i++){
+                flag = clicked[i];
+                if(flag == 0){
+                    continue;
+                }
+                for(j = 0; j < 3; j++){
+                    if(flag != clicked[j*3+i]){
+                        break;
+                    }
+                    if(j == 2){
+                        return true;
+                    }
+                }
+            }
+            if(clicked[4] == 0){
+                return false;
+            }
+            if(clicked[0] == clicked[4] && clicked[4] == clicked[8]){
+                return true;
+            }
+            if(clicked[2] == clicked[4] && clicked[4] == clicked[6]){
+                return true;
+            }
+            return false;
+        }
+        function Winner(arr){
+            for (let i = 0; i < 3; i++){
+                let flag = arr[i*3];
+                if(flag == 0){
+                    continue;
+                }
+                for(let j = 0; j < 3; j++){
+                    if(flag != arr[i*3+j]){
+                        break;
+                    }
+                    if(j == 2){
+                        if(flag == 1){
+                            return 1000;
+                        }
+                        return -1000;
+                    }
+                }
+            }
+            for (let i = 0; i < 3; i++){
+                let flag = arr[i];
+                if(flag == 0){
+                    continue;
+                }
+                for(let j = 0; j < 3; j++){
+                    if(flag != arr[j*3+i]){
+                        break;
+                    }
+                    if(j == 2){
+                        if(flag == 1){
+                            return 1000;
+                        }
+                        return -1000;
+                    }
+                }
+            }
+            if(arr[4] == 0){
+                return 0;
+            }
+            if(arr[0] == arr[4] && arr[4] == arr[8]){
+                if(arr[4] == 1){
+                    return 1000;
+                }
+                return -1000;
+            }
+            if(arr[2] == arr[4] && arr[4] == arr[6]){
+                if(arr[4] == 1){
+                    return 1000;
+                }
+                return -1000;
+            }
+            return 0;
+        }
+
+        function isDraw(ar){
+            for(let ii = 0; ii < 9; ii++){
+                if(ar[ii] == 0){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function run(){
+            let free = 1000000;
+            let position = -1;
+            for(let eachcell = 0; eachcell < 9; eachcell++){
+                if(clicked[eachcell] != 0){
+                    continue;
+                }
+                let goodnessforcell = minimax(clicked.slice(), true, eachcell, 0);
+                if(free > goodnessforcell){
+                    free = goodnessforcell;
+                    position = eachcell;
+                }
+            }
+            console.log("Position :" + position);
+            if(position != -1){
+                boxi(position);
+            }
+        }
+        function minimax(array, Maximising, pos, depth){
+            if(Maximising == true)
+                array[pos] = 2;
+            else
+                array[pos] = 1;
+            let cost = Winner(array.slice());
+            if(cost != 0){
+                if(cost < 0){
+                    return cost+depth;
+                }
+                else{
+                    return cost-depth;
+                }
+            }
+            if(isDraw(array.slice()) == true){
+                return 0;
+            }
+            if(Maximising == true){
+                let best = -1000;
+                for(let k = 0; k < 9; k++){
+                    if(array[k] == 0){
+                        let cc = minimax(array.slice(), false, k, depth+1);
+                        if(best < cc){
+                            best = cc;
+                        }
+                    }
+                }
+                return best;
+            }
+            else{
+                let best2 = 1000;
+                for(let k2 = 0; k2 < 9; k2++){
+                    if(array[k2] == 0){
+                        let cc2 = minimax(array.slice(), true, k2, depth+1);
+                        if(best2 > cc2){
+                            best2 = cc2;
+                        }
+                    }
+                }
+                return best2;
+            }
+        }
+        function reset(){
+            location.reload();
+        }
+    </script>
+</body>
+</html>
