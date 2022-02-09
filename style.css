@@ -1,0 +1,80 @@
+.block{
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    border: 2px solid;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
+body{
+    margin-top: 10%;
+    margin-bottom: 15%;
+    justify-content: center;
+    align-items: center;
+}
+
+.layout{
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    justify-content: center;
+    align-items: center;
+}
+
+#welcomeMessage{
+    font-style: italic;
+    font: 1em;
+    padding-bottom: 3em;
+}
+
+#a, #b, #c{
+    border-top: none;
+}
+
+#a, #d, #g{
+    border-left: none;
+}
+
+#c, #f, #i{
+    border-right: none;
+}
+
+#h, #i, #g{
+    border-bottom: none;
+}
+
+.Reset{
+    justify-content: center;
+    align-items: center;
+    margin-top: 10%;
+}
+
+#reset{
+    font-size: 20px;
+    font-weight: bold;
+    height: 50px;
+    width: 150px;
+    cursor: pointer;
+    background-color: burlywood;
+}
+
+.win, .loss{
+    display: none;
+    font-size: 2em;
+    justify-content: center;
+    align-items:center;
+}
+
+.win.show, .loss.show{
+    display: flex;
+}
+
+.block:hover{
+    background-color: rgb(142, 144, 156, 0.1);
+}
+
+#reset:hover{
+    background-color: rgb(124, 104, 60, 0.1);
+}
